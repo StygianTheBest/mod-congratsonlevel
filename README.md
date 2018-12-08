@@ -23,7 +23,7 @@
 
 ### Credits ###
 ------------------------------------------------------------------------------------------------------------------
-#### A module for AzerothCore by StygianTheBest ([http://stygianthebest.github.io](stygianthebest.github.io)) ####
+#### A module for AzerothCore by StygianTheBest ([stygianthebest.github.io](http://stygianthebest.github.io)) ####
 
 ###### Additional Credits include:
 - [LordPsyan](https://bitbucket.org/lordpsyan/lordpsyan-patches)
