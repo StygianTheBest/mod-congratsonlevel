@@ -2,9 +2,6 @@
 
 # Congrats On Level #
 
-#### A module for AzerothCore by [StygianTheBest](https://github.com/StygianTheBest/AzerothCore-Content/tree/master/Modules)
-------------------------------------------------------------------------------------------------------------------
-
 
 ### Description ###
 ------------------------------------------------------------------------------------------------------------------
@@ -33,13 +30,17 @@ config file for quick modifications.
 
 ### Version ###
 ------------------------------------------------------------------------------------------------------------------
-- v2017.08.06 - Release
-- v2017.09.30 - Fix Level Display Bug. Update Strings.
+- v2018.12.09 - Update Config
 - v2018.12.01 - Update Announce and Config code
+- v2017.09.30 - Fix Level Display Bug. Update Strings.
+- v2017.08.06 - Release
 
 
 ### Credits ###
 ------------------------------------------------------------------------------------------------------------------
+#### A module for AzerothCore by StygianTheBest ([stygianthebest.github.io](http://stygianthebest.github.io)) ####
+
+###### Additional Credits include:
 - [LordPsyan](https://bitbucket.org/lordpsyan/lordpsyan-patches)
 - [Blizzard Entertainment](http://blizzard.com)
 - [TrinityCore](https://github.com/TrinityCore/TrinityCore/blob/3.3.5/THANKS)
@@ -64,13 +65,13 @@ config file for quick modifications.
 #include "Config.h"
 #include "Player.h"
 
-bool CongratsEnable = 1;
-bool CongratsAnnounceModule = 1;
+bool CongratsEnable = true;
+bool CongratsAnnounceModule = true;
 
 class CongratsConfig : public WorldScript
 {
 public:
-    CongratsConfig() : WorldScript("CongratsConfig_conf") { }
+    CongratsConfig() : WorldScript("CongratsConfig") { }
 
     void OnBeforeConfigLoad(bool reload) override
     {
@@ -84,9 +85,16 @@ public:
             sConfigMgr->LoadMore(cfg_def_file.c_str());
             sConfigMgr->LoadMore(cfg_file.c_str());
 
-            CongratsEnable = sConfigMgr->GetBoolDefault("Congrats.Enable", 1);
-            CongratsAnnounceModule = sConfigMgr->GetBoolDefault("Congrats.Announce", 1);
+            // Load Configuration Settings
+            SetInitialWorldSettings();
         }
+    }
+
+    // Load Configuration Settings
+    void SetInitialWorldSettings()
+    {
+        CongratsEnable = sConfigMgr->GetBoolDefault("Congrats.Enable", true);
+        CongratsAnnounceModule = sConfigMgr->GetBoolDefault("Congrats.Announce", true);
     }
 };
 
@@ -100,9 +108,9 @@ public:
     void OnLogin(Player* player)
     {
         // Announce Module
-        if (CongratsEnable = true)
+        if (CongratsEnable)
         {
-            if (CongratsAnnounceModule = true)
+            if (CongratsAnnounceModule)
             {
                 ChatHandler(player->GetSession()).SendSysMessage("This server is running the |cff4CFF00CongratsOnLevel |rmodule.");
             }
@@ -120,7 +128,8 @@ public:
     void OnLevelChanged(Player* player, uint8 oldLevel)
     {
         // If enabled...
-        if (sConfigMgr->GetBoolDefault("Congrats.Enable", true)) {
+        if (CongratsEnable)
+        {
 
             std::string level;
             uint32 money, item1, item2, spell;
